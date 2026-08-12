@@ -39,6 +39,8 @@ For guidance on how to instruct agents to use these skills together, see the [`C
 | [agent-browser](skills/agent-browser/SKILL.md) | `/agent-browser` | Browser automation CLI for AI agents via CDP | [Vercel Labs](https://www.skills.sh/vercel-labs/agent-browser/agent-browser) |
 | [documentation-and-adrs](skills/documentation-and-adrs/SKILL.md) | `/documentation-and-adrs` | Records architectural decisions and ensures README exists | [Gidi Morris](https://github.com/gmmorris/xp-and-lean-agent-specification) |
 | [generating-novel-ideas](skills/generating-novel-ideas/SKILL.md) | `/generating-novel-ideas` | Structured ideation workflow — search process across independent idea pools, analogy transfer, contradiction resolution, and portfolio of finalists with tests | [Tristan Manchester](https://github.com/tristanmanchester/agent-skills/tree/main/generating-novel-ideas) |
+| [simplify](skills/simplify/SKILL.md) | `/simplify` | Reviews recently modified code for clarity and consistency, then applies refinements without changing functionality | [brianlovin/agent-config](https://github.com/brianlovin/agent-config/tree/main), with some of my customisations added |
+| [security-reviewer](skills/security-reviewer/SKILL.md) | `/security-reviewer` | Reviews code for injection vulnerabilities, auth flaws, secrets, and data-handling issues | [brianlovin/agent-config](https://github.com/brianlovin/agent-config/tree/main), with some of my customisations added |
 
 ---
 
@@ -63,6 +65,7 @@ For guidance on how to instruct agents to use these skills together, see the [`C
 | agent-skills | [GitHub](https://github.com/tristanmanchester/agent-skills) | Tristan Manchester's agent skills — includes `generating-novel-ideas`, a structured ideation workflow that treats idea generation as a search process rather than list-making |
 | gstack | [GitHub](https://github.com/garrytan/gstack) | Garry Tan's personal AI development stack and tooling setup |
 | gbrain | [GitHub](https://github.com/garrytan/gbrain) | Garry Tan's gbrain — an architectural pattern for agentic memory and reasoning worth exploring |
+| agent-config | [GitHub](https://github.com/brianlovin/agent-config/tree/main) | Brian Lovin's agent/skill configs — source for `simplify` and `security-reviewer`, both lightly customised (see their SKILL.md files for what changed) |
 
 ## Plugins from others
 
