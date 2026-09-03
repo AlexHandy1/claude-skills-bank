@@ -22,6 +22,8 @@ A collection of practical tips I've picked up along the way and gotchas to watch
 | [claude-api skill dumps all docs when language can't be inferred](#claude-api-skill-dumps-all-language-docs-when-it-cant-infer-the-project-language) | With no .py/.ts/etc. source files yet in the repo, the skill's language-detection fallback silently injected every language's reference docs (~309k tokens) instead of asking which language to show |
 | [Custom subagents + skill orchestration for parallel research](#custom-subagents--skill-orchestration-for-parallel-research) | Early encouraging result: a project `.claude/agents/` subagent doing read-only research, fanned out in parallel and orchestrated by a skill that serializes writes, cut wall-clock time with no correctness issues |
 | [Spec-driven development pays off mainly in fully autonomous mode](#spec-driven-development-pays-off-mainly-in-fully-autonomous-mode) | In a co-pilot/steward pattern, a highly detailed spec (e.g. from `/grill-me`) doesn't drive the expected efficiency gains — ends up debated and expanded live anyway, especially when design thinking is meant to evolve during the build |
+| [OpenRouter routing doesn't guarantee lowest price unless you set a strategy](#openrouter-routing-doesnt-guarantee-lowest-price-unless-you-set-a-strategy) | Default routing balances low price against high uptime — it will not always pick the cheapest provider/quote for a model. Set the routing strategy explicitly if you want bounded/predictable cost |
+| [Claude Code web AI workflows need extra infra setup](#claude-code-web-ai-workflows-need-extra-infra-setup) | Beyond the repo: a separate API key per external service (e.g. OpenRouter), an allowed-domains list (e.g. openrouter.ai), and awareness that the local CLI can now push workflows back to the cloud once started — be intentional about whether you want that |
 
 ---
 
@@ -244,3 +246,25 @@ A related, separate cost: keeping documentation (specs, ADRs, architecture docs)
 **Practical implication:** Match spec detail to work mode. For fully autonomous sessions, invest in a detailed `/grill-me`-style spec upfront. For co-pilot/steward sessions where design is meant to evolve during the build, a lighter spec is likely sufficient — the heavy detail will be renegotiated live regardless.
 
 **Status:** Open area. Worth experimenting with lighter-weight spec formats for co-pilot sessions, and with context management approaches (e.g. incremental context updates vs. full doc re-sync) that reduce the ongoing cost of keeping documentation current.
+
+---
+
+## OpenRouter routing doesn't guarantee lowest price unless you set a strategy
+
+Routing a model request through OpenRouter does not mean you get the lowest price quoted for that model, or any specific provider, by default. The default behaviour appears to balance low price against high uptime — so OpenRouter may route to a more expensive or more available provider rather than the cheapest one.
+
+**Practical implication:** If you want bounded or predictable cost, set the routing strategy (provider preferences / sort order) explicitly on the request rather than relying on the default. Don't assume "via OpenRouter" equals "cheapest available".
+
+---
+
+## Claude Code web AI workflows need extra infra setup
+
+Getting a Claude Code web AI workflow to run effectively takes more than pointing it at a repo. Components that needed to be set up separately:
+
+- **A separate API key** for any external service the workflow calls (e.g. OpenRouter) — this is not inherited from local config and must be provided to the web environment.
+- **An allowed-domains list** — outbound network access is restricted, so any host the workflow needs to reach (e.g. `openrouter.ai`) must be explicitly allow-listed.
+- **Awareness that the local Claude CLI can push workflows back to the cloud once started** — this appears to be new functionality. Be intentional about whether you want a workflow to hand off to the cloud mid-run; it can happen without you explicitly asking for it.
+
+**Practical implication:** Budget setup time for keys and domain allow-listing before expecting a web workflow to work end-to-end, and decide up front whether local→cloud handoff is desired for a given workflow.
+
+**Related:** [[Visual browser review is not available in Claude Code web]], [[Granting Claude Code web access to a private GitHub repo]]
